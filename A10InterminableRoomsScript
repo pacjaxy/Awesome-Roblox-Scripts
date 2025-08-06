@@ -1,0 +1,111 @@
+--// 💥 A-10 Project: Invisibility Unit of Chaos 💥 //-- 
+--DO NOT USE THIS FOR EXPLOITING. IM NOT RESPONISABLE FOR ANY BANS OR TERMINATIONS
+local targetName = "windowstester5" -- REPLACE THIS WITH YOUR NAME
+local particleTextureId = "rbxassetid://12925871963"
+local soundId = "rbxassetid://9126159606"
+
+-- Make character invisible, remove face, boost health
+local function soupifyCharacter(char)
+    local humanoid = char:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.MaxHealth = 1000
+        humanoid.Health = 1000
+    end
+
+    for _, part in ipairs(char:GetChildren()) do
+        if part:IsA("BasePart") then
+            part.Transparency = 1
+        end
+
+        if part:IsA("Part") and part.Name == "Head" then
+            for _, decal in ipairs(part:GetChildren()) do
+                if decal:IsA("Decal") and decal.Name == "face" then
+                    decal:Destroy()
+                end
+            end
+        end
+    end
+end
+
+-- Add light, particles, and sound with effects
+local function cosmicEffects(part)
+    if not part then return end
+
+    local light = Instance.new("PointLight")
+    light.Color = Color3.fromRGB(0, 170, 255)
+    light.Range = 40
+    light.Brightness = 1
+    light.Parent = part
+
+    local particles = Instance.new("ParticleEmitter")
+    particles.Texture = particleTextureId
+    particles.Size = NumberSequence.new(5)
+    particles.Rate = 20
+    particles.Lifetime = NumberRange.new(0.05)
+    particles.Rotation = NumberRange.new(-50, 50)
+    particles.Speed = NumberRange.new(0)
+    particles.Parent = part
+
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundId
+    sound.Volume = 1
+
+    local distortion = Instance.new("DistortionSoundEffect")
+    distortion.Level = 0.95
+    distortion.Parent = sound
+
+    local eq = Instance.new("EqualizerSoundEffect")
+    eq.Priority = 0
+    eq.MidGain = -7.1
+    eq.LowGain = 10
+    eq.HighGain = -37.7
+    eq.Parent = sound
+
+    sound.Parent = part
+    sound:Play()
+end
+
+-- Delete other players’ heads on contact
+local function applyTouchKill(char)
+    for _, part in ipairs(char:GetChildren()) do
+        if part:IsA("BasePart") then
+            part.Touched:Connect(function(hit)
+                local humanoid = hit.Parent and hit.Parent:FindFirstChildOfClass("Humanoid")
+                local head = hit.Parent and hit.Parent:FindFirstChild("Head")
+                if humanoid and head then
+                    head:Destroy()
+                end
+            end)
+        end
+    end
+end
+
+-- Master processor
+local function process(char)
+    local hum = char:FindFirstChildOfClass("Humanoid")
+    if not hum or hum.RigType ~= Enum.HumanoidRigType.R6 then return end
+
+    soupifyCharacter(char)
+
+    local anchor = char:FindFirstChild("Head")
+               or char:FindFirstChild("Torso")
+               or char:FindFirstChild("HumanoidRootPart")
+
+    cosmicEffects(anchor)
+    applyTouchKill(char)
+end
+
+-- Initial scan
+for _, obj in ipairs(workspace:GetChildren()) do
+    if obj:IsA("Model") and obj.Name == targetName then
+        process(obj)
+    end
+end
+
+-- React to new spawn
+workspace.ChildAdded:Connect(function(obj)
+    if obj:IsA("Model") and obj.Name == targetName then
+        task.wait(1)
+        process(obj)
+    end
+end)
