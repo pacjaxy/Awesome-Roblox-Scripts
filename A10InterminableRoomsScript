@@ -4,7 +4,6 @@ local targetName = "windowstester5" -- REPLACE THIS WITH YOUR NAME
 local particleTextureId = "rbxassetid://12925871963"
 local soundId = "rbxassetid://9126159606"
 
--- Make character invisible, remove face, boost health
 local function soupifyCharacter(char)
     local humanoid = char:FindFirstChildOfClass("Humanoid")
     if humanoid then
@@ -25,8 +24,14 @@ local function soupifyCharacter(char)
                 end
             end
         end
+
+        -- 💥 Remove accessories
+        if part:IsA("Accessory") then
+            part:Destroy()
+        end
     end
 end
+
 
 -- Add light, particles, and sound with effects
 local function cosmicEffects(part)
