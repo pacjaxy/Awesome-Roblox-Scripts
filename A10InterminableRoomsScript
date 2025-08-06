@@ -51,6 +51,7 @@ local function cosmicEffects(part)
     particles.Rotation = NumberRange.new(-50, 50)
     particles.Speed = NumberRange.new(0)
     particles.Parent = part
+    particles.LockedToPart = true
 
     local sound = Instance.new("Sound")
     sound.SoundId = soundId
