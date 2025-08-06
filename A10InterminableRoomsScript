@@ -10,7 +10,7 @@ local function soupifyCharacter(char)
     if humanoid then
         humanoid.MaxHealth = 1000
         humanoid.Health = 1000
-        humanoid.Walkspeed = 35
+        humanoid.WalkSpeed = 35
     end
 
     for _, part in ipairs(char:GetChildren()) do
