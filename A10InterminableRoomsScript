@@ -42,18 +42,16 @@ local function cosmicEffects(part)
     light.Range = 40
     light.Brightness = 1
     light.Parent = part
-local particles = Instance.new("ParticleEmitter")
-particles.Texture = particleTextureId
-particles.Size = NumberSequence.new({
-    NumberSequenceKeypoint.new(3, 3)
-})
-particles.Rate = 50
-particles.Lifetime = NumberRange.new(0.1, 0.3)
-particles.Rotation = NumberRange.new(-180, 180)
-particles.RotSpeed = NumberRange.new(-90, 90)
-particles.Speed = NumberRange.new(0, 2)
+local particles = Instance.new("ParticleEmitter") 
+particles.Texture = particleTextureId 
+particles.Size = NumberSequence.new(5) 
+particles.Rate = 20 
+particles.Lifetime = NumberRange.new(0.05) 
+particles.Rotation = NumberRange.new(-50, 50) 
+particles.Speed = NumberRange.new(0) 
+particles.Parent = part 
 particles.LockedToPart = true
-particles.Parent = part
+
 
 
     local sound = Instance.new("Sound")
